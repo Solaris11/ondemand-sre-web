@@ -1,15 +1,35 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @layer base {
-  * { border-color: rgba(51, 65, 85, 0.3); }
-  body { background-color: #0c1222; color: #e8eaed; }
+  body {
+    background-color: #0B0B0F;
+    color: #E6E6EB;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    /* Layer 2: Subtle Vertical Light Shift */
+    background: linear-gradient(to bottom, #0B0B0F 0%, #0E0E14 45%, #0B0B0F 100%);
+  }
 }
 
-@layer components {
-  .glow-emerald { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
-  .text-gradient { background: linear-gradient(135deg, #34d399, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; }
-  .panel-border { border: 1px solid rgba(51, 65, 85, 0.3); background: rgba(22, 33, 62, 0.6); backdrop-filter: blur(12px); }
+/* Layer 1: Infrastructure Matrix Grid */
+.bg-matrix-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Layer 3: Controlled Vignette */
+.vignette-overlay {
+  background: radial-gradient(circle at center, transparent 30%, rgba(11, 11, 15, 0.4) 100%);
+  pointer-events: none;
+}
+
+/* Global Motion Discipline (Locked < 200ms) */
+.transition-architect {
+  transition: all 180ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.topology-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.83L0 55.457l-.83-.83L54.627 0zM59.155.544l.3.3L.3 59.155l-.3-.3L59.155.544z' fill='%234F46E5' fill-opacity='0.04' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
