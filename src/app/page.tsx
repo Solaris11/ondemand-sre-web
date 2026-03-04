@@ -2,6 +2,7 @@
 
 import type { Variants } from "framer-motion";
 import { LazyMotion, domAnimation, m, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 import {
   Activity,
   CheckCircle2,
@@ -11,7 +12,6 @@ import {
   Mail,
   Menu,
   ShieldAlert,
-  User,
   X,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -419,10 +419,11 @@ export default function Home() {
 
         {/* NAVBAR */}
         <nav
-          className={`fixed top-0 w-full z-50 transition-all duration-200 ${scrolled
+          className={`fixed top-0 w-full z-50 transition-all duration-200 ${
+            scrolled
               ? "bg-[#0B0B0F]/92 border-b border-white/[0.05] backdrop-blur-xl py-3"
               : "bg-transparent border-b border-transparent py-5"
-            }`}
+          }`}
           aria-label="Primary"
         >
           <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between">
@@ -451,14 +452,16 @@ export default function Home() {
                     key={item.key}
                     type="button"
                     onClick={() => scrollToId(item.key)}
-                    className={`relative hover:text-indigo-200 transition-colors ${active ? "text-white" : ""
-                      }`}
+                    className={`relative hover:text-indigo-200 transition-colors ${
+                      active ? "text-white" : ""
+                    }`}
                     aria-current={active ? "page" : undefined}
                   >
                     {item.label}
                     <span
-                      className={`absolute -bottom-3 left-1/2 -translate-x-1/2 h-[2px] w-6 rounded-full transition-all ${active ? "bg-indigo-500/70 opacity-100" : "opacity-0"
-                        }`}
+                      className={`absolute -bottom-3 left-1/2 -translate-x-1/2 h-[2px] w-6 rounded-full transition-all ${
+                        active ? "bg-indigo-500/70 opacity-100" : "opacity-0"
+                      }`}
                       aria-hidden="true"
                     />
                   </button>
@@ -519,10 +522,11 @@ export default function Home() {
                         scrollToId(item.key);
                         closeMobile();
                       }}
-                      className={`px-4 py-3 text-left ${MICRO_PANEL} ${activeSection === item.key
+                      className={`px-4 py-3 text-left ${MICRO_PANEL} ${
+                        activeSection === item.key
                           ? "border-indigo-500/35 text-white"
                           : "text-white/70"
-                        }`}
+                      }`}
                     >
                       <div className="text-[10px] font-black uppercase tracking-[0.25em]">
                         {item.label}
@@ -782,10 +786,11 @@ export default function Home() {
                     key={item.title}
                     type="button"
                     onClick={() => setStackOpen(isOpen ? null : item)}
-                    className={`p-8 text-center text-[10px] font-black uppercase tracking-[0.3em] transition-all ${PANEL} ${isOpen
+                    className={`p-8 text-center text-[10px] font-black uppercase tracking-[0.3em] transition-all ${PANEL} ${
+                      isOpen
                         ? "border-indigo-500/35 text-white"
                         : "text-slate-500 hover:text-white hover:border-indigo-500/25"
-                      } focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/30`}
+                    } focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/30`}
                     aria-expanded={isOpen}
                     aria-controls="stack-detail"
                   >
@@ -1038,21 +1043,26 @@ export default function Home() {
             className="py-28 sm:py-36 px-6 sm:px-8 max-w-7xl mx-auto border-t border-white/[0.04]"
           >
             <div className="grid lg:grid-cols-12 gap-14 lg:gap-24 items-center">
+
               <div className={`lg:col-span-4 aspect-[4/5] relative overflow-hidden group shadow-inner p-0 ${PANEL}`}>
+                <Image
+                  src="/founder.jpg"
+                  alt="Emrah Bayram - Founder & Staff SRE"
+                  fill
+                  className="object-cover opacity-90 grayscale-[15%] transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
+                  priority
+                />
                 <div
-                  className="absolute inset-0 opacity-[0.03]"
+                  className="absolute inset-0 opacity-[0.03] z-10 pointer-events-none"
                   style={{
                     backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
                     backgroundSize: "12px 12px",
                   }}
                   aria-hidden="true"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0F] via-transparent to-transparent z-10" aria-hidden="true" />
-                <div className="absolute inset-0 flex items-center justify-center opacity-[0.025] select-none pointer-events-none" aria-hidden="true">
-                  <User size={210} />
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0F] via-[#0B0B0F]/50 to-transparent z-20 pointer-events-none" aria-hidden="true" />
 
-                <div className="absolute bottom-10 left-10 z-20">
+                <div className="absolute bottom-10 left-10 z-30">
                   <div className="text-white font-black text-3xl tracking-tighter opacity-90">
                     Emrah Bayram
                   </div>
