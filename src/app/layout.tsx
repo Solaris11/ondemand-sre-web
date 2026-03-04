@@ -6,10 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.ondemandsre.com"),
-
-  alternates: {
-    canonical: "/",
-  },
+  alternates: { canonical: "/" },
 
   title: "OnDemand SRE | Staff-Level Cloud Infrastructure & Reliability Consulting",
 
@@ -33,14 +30,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.ondemandsre.com",
+    url: "/",
     title: "OnDemand SRE | Infrastructure Decisions at Scale",
     description:
       "Direct technical pipeline to high-availability architecture and sustainable engineering culture.",
     siteName: "OnDemand SRE",
     images: [
       {
-        url: "https://www.ondemandsre.com/og-image.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "OnDemand SRE",
@@ -50,10 +47,10 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "OnDemand SRE | Staff-Level Reliability Consulting",
+    title: "OnDemand SRE | Infrastructure Decisions at Scale",
     description:
-      "Fractional Staff SRE helping teams build high-availability production systems.",
-    images: ["https://www.ondemandsre.com/og-image.png"],
+      "Direct technical pipeline to high-availability architecture and sustainable engineering culture.",
+    images: ["/og-image.png"],
   },
 
   robots: {
@@ -71,9 +68,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" className="scroll-smooth">
       <body className={inter.className}>{children}</body>
