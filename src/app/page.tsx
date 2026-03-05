@@ -2,7 +2,6 @@
 
 import type { Variants } from "framer-motion";
 import { LazyMotion, domAnimation, m, useReducedMotion } from "framer-motion";
-import Image from "next/image";
 import {
   Activity,
   CheckCircle2,
@@ -14,6 +13,7 @@ import {
   ShieldAlert,
   X,
 } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import CalendlyModal from "../components/CalendlyModal";
 
@@ -419,11 +419,10 @@ export default function Home() {
 
         {/* NAVBAR */}
         <nav
-          className={`fixed top-0 w-full z-50 transition-all duration-200 ${
-            scrolled
+          className={`fixed top-0 w-full z-50 transition-all duration-200 ${scrolled
               ? "bg-[#0B0B0F]/92 border-b border-white/[0.05] backdrop-blur-xl py-3"
               : "bg-transparent border-b border-transparent py-5"
-          }`}
+            }`}
           aria-label="Primary"
         >
           <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between">
@@ -452,16 +451,14 @@ export default function Home() {
                     key={item.key}
                     type="button"
                     onClick={() => scrollToId(item.key)}
-                    className={`relative hover:text-indigo-200 transition-colors ${
-                      active ? "text-white" : ""
-                    }`}
+                    className={`relative hover:text-indigo-200 transition-colors ${active ? "text-white" : ""
+                      }`}
                     aria-current={active ? "page" : undefined}
                   >
                     {item.label}
                     <span
-                      className={`absolute -bottom-3 left-1/2 -translate-x-1/2 h-[2px] w-6 rounded-full transition-all ${
-                        active ? "bg-indigo-500/70 opacity-100" : "opacity-0"
-                      }`}
+                      className={`absolute -bottom-3 left-1/2 -translate-x-1/2 h-[2px] w-6 rounded-full transition-all ${active ? "bg-indigo-500/70 opacity-100" : "opacity-0"
+                        }`}
                       aria-hidden="true"
                     />
                   </button>
@@ -522,11 +519,10 @@ export default function Home() {
                         scrollToId(item.key);
                         closeMobile();
                       }}
-                      className={`px-4 py-3 text-left ${MICRO_PANEL} ${
-                        activeSection === item.key
+                      className={`px-4 py-3 text-left ${MICRO_PANEL} ${activeSection === item.key
                           ? "border-indigo-500/35 text-white"
                           : "text-white/70"
-                      }`}
+                        }`}
                     >
                       <div className="text-[10px] font-black uppercase tracking-[0.25em]">
                         {item.label}
@@ -786,11 +782,10 @@ export default function Home() {
                     key={item.title}
                     type="button"
                     onClick={() => setStackOpen(isOpen ? null : item)}
-                    className={`p-8 text-center text-[10px] font-black uppercase tracking-[0.3em] transition-all ${PANEL} ${
-                      isOpen
+                    className={`p-8 text-center text-[10px] font-black uppercase tracking-[0.3em] transition-all ${PANEL} ${isOpen
                         ? "border-indigo-500/35 text-white"
                         : "text-slate-500 hover:text-white hover:border-indigo-500/25"
-                    } focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/30`}
+                      } focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/30`}
                     aria-expanded={isOpen}
                     aria-controls="stack-detail"
                   >
@@ -953,6 +948,41 @@ export default function Home() {
                   </m.div>
                 ))}
               </div>
+
+              {/* NEW RELIABILITY LAB ARCHITECTURE SECTION */}
+              <section className="mt-28 max-w-6xl mx-auto px-6 text-center">
+                <h2 className="text-3xl font-semibold tracking-tight">
+                  Reliability Lab Architecture
+                </h2>
+
+                <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
+                  This lab simulates real-world reliability scenarios including regional
+                  outages, traffic failover, observability and incident response workflows.
+                </p>
+
+                <div className="mt-12">
+                  <Image
+                    src="/reliability-lab-architecture.png"
+                    alt="OnDemand SRE Reliability Lab Architecture"
+                    width={1200}
+                    height={700}
+                    className="mx-auto rounded-xl shadow-lg"
+                  />
+                </div>
+
+                <div className="mt-12 text-left max-w-xl mx-auto">
+                  <h3 className="text-lg font-medium mb-3">Lab Stack</h3>
+
+                  <ul className="space-y-2 text-gray-400">
+                    <li>• Kubernetes (k3d clusters)</li>
+                    <li>• Prometheus + Grafana</li>
+                    <li>• Alertmanager</li>
+                    <li>• k6 Load Testing</li>
+                    <li>• Chaos failure simulation</li>
+                    <li>• Multi-region traffic routing</li>
+                  </ul>
+                </div>
+              </section>
 
               <m.div
                 variants={ARCHITECT_ENTRY}
