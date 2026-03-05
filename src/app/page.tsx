@@ -1122,7 +1122,7 @@ export default function Home() {
 
                   <div className="grid md:grid-cols-2 gap-10 pt-2 not-italic uppercase tracking-[0.2em] text-[10px]">
                     <ul className="space-y-5">
-                      {["15+ Years Infrastructure", "Enterprise Global Scale", "Multi-Region Architecture"].map((l) => (
+                      {["20+ Years Infrastructure", "Enterprise Global Scale", "Multi-Region Architecture"].map((l) => (
                         <li key={l} className="flex items-center gap-4 text-slate-400">
                           <CheckCircle2 size={12} className="text-indigo-500/40" />
                           {l}
