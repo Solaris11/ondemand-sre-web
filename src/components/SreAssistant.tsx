@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { MessageSquare, X, Send, Bot, Terminal } from 'lucide-react';
+import { X, Send, Bot, Terminal } from 'lucide-react';
 
 const PANEL = "bg-[#0F0F13]/95 backdrop-blur-md border border-white/[0.08] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]";
 const PRIMARY_BTN = "bg-indigo-700 text-white rounded-xl font-black hover:translate-y-px transition-all shadow-[0_0_40px_rgba(79,70,229,0.18)]";
@@ -12,13 +12,12 @@ export default function SreAssistant() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: `Merhaba Emrah! Ben OnDemandSRE Asistanı. 🚀\n\nSistemlerinin sağlığını korumak ve altyapıdaki kör noktaları aydınlatmak için buradayım.\n\n**Hemen şunları sorabilirsin:**\n- "K3s loglarını analiz et"\n- "Neden CPU kullanımı yüksek?"\n- "Postgres bağlantılarını kontrol et"`
+      content: `Hello! I'm your OnDemandSRE Copilot. 🚀\n\nI'm here to monitor your system health and illuminate blind spots in your infrastructure.\n\n**Quick Queries:**\n- "Analyze K3s cluster logs"\n- "Identify high CPU usage causes"\n- "Audit PostgreSQL connection pools"`
     }
   ]);
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Otomatik aşağı kaydır
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages]);
@@ -30,7 +29,7 @@ export default function SreAssistant() {
     setInput("");
 
     try {
-      // Senin Ingress IP/Domain adresin buraya gelecek
+      // Use the external Ingress IP or Domain here for production
       const response = await fetch('http://<YOUR_INGRESS_IP>/process', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -39,7 +38,7 @@ export default function SreAssistant() {
       const data = await response.json();
       setMessages(prev => [...prev, { role: 'assistant', content: data.result }]);
     } catch (error) {
-      setMessages(prev => [...prev, { role: 'assistant', content: "⚠️ Gateway'e bağlanılamadı. Lütfen Ingress ayarlarını kontrol et." }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: "⚠️ Connection failed. Please verify API Gateway and Ingress configuration." }]);
     }
   };
 
@@ -59,19 +58,23 @@ export default function SreAssistant() {
                 <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400">SRE Copilot v1.0</span>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white"><X size={18} /></button>
+              <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white transition-colors" aria-label="Close Assistant">
+                <X size={18} />
+              </button>
             </div>
 
             {/* Chat Area */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[85%] p-3 rounded-xl text-sm ${
+                  <div className={`max-w-[85%] p-3 rounded-xl text-sm leading-relaxed ${
                     msg.role === 'user'
                     ? 'bg-indigo-600/20 border border-indigo-500/30 text-indigo-100'
                     : 'bg-white/[0.03] border border-white/[0.05] text-slate-300'
                   }`}>
-                    {msg.content.split('\n').map((line, j) => <p key={j} className="mb-1">{line}</p>)}
+                    {msg.content.split('\n').map((line, j) => (
+                      <p key={j} className={line.trim() === "" ? "h-2" : "mb-1"}>{line}</p>
+                    ))}
                   </div>
                 </div>
               ))}
@@ -83,10 +86,12 @@ export default function SreAssistant() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Sisteme sor..."
-                className="flex-1 bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500/50"
+                placeholder="Query system status..."
+                className="flex-1 bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-indigo-500/50 transition-colors"
               />
-              <button onClick={handleSend} className={`p-2 ${PRIMARY_BTN}`}><Send size={16} /></button>
+              <button onClick={handleSend} className={`p-2 ${PRIMARY_BTN}`} aria-label="Send Query">
+                <Send size={16} />
+              </button>
             </div>
           </m.div>
         )}
@@ -98,6 +103,7 @@ export default function SreAssistant() {
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
         className={`w-14 h-14 flex items-center justify-center shadow-2xl ${PRIMARY_BTN}`}
+        aria-label="Toggle SRE Assistant"
       >
         {isOpen ? <Terminal size={24} /> : <Bot size={24} />}
       </m.button>
