@@ -3,13 +3,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { X, Send, Bot, Terminal } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const PANEL = "bg-[#0F0F13]/95 backdrop-blur-md border border-white/[0.08] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]";
 const PRIMARY_BTN = "bg-indigo-700 text-white rounded-xl font-black hover:translate-y-px transition-all shadow-[0_0_40px_rgba(79,70,229,0.18)]";
 
+interface Message {
+  role: 'assistant' | 'user';
+  content: string;
+}
+
 export default function SreAssistant() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
       content: `Hello! I'm your OnDemandSRE Copilot. 🚀\n\nI'm here to monitor your system health and illuminate blind spots in your infrastructure.\n\n**Quick Queries:**\n- "Analyze K3s cluster logs"\n- "Identify high CPU usage causes"\n- "Audit PostgreSQL connection pools"`
@@ -20,16 +27,16 @@ export default function SreAssistant() {
 
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-  }, [messages]);
+  }, [messages, isOpen]);
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    const userMsg = { role: 'user', content: input };
+    const userMsg: Message = { role: 'user', content: input };
     setMessages(prev => [...prev, userMsg]);
     setInput("");
 
     try {
-      // Use the external Ingress IP or Domain here for production
+      // Replace with your actual Ingress IP/Domain
       const response = await fetch('http://<YOUR_INGRESS_IP>/process', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -58,7 +65,7 @@ export default function SreAssistant() {
                 <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400">SRE Copilot v1.0</span>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white transition-colors" aria-label="Close Assistant">
+              <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white transition-colors">
                 <X size={18} />
               </button>
             </div>
@@ -72,9 +79,31 @@ export default function SreAssistant() {
                     ? 'bg-indigo-600/20 border border-indigo-500/30 text-indigo-100'
                     : 'bg-white/[0.03] border border-white/[0.05] text-slate-300'
                   }`}>
-                    {msg.content.split('\n').map((line, j) => (
-                      <p key={j} className={line.trim() === "" ? "h-2" : "mb-1"}>{line}</p>
-                    ))}
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      components={{
+                        // Handle code blocks (backticks)
+                        code({ className, children, ...props }) {
+                          const match = /language-(\w+)/.exec(className || '');
+                          const isInline = !match;
+                          return isInline ? (
+                            <code className="bg-black/50 rounded px-1 font-mono text-indigo-300" {...props}>
+                              {children}
+                            </code>
+                          ) : (
+                            <code className="block bg-black/40 p-3 rounded-lg my-2 overflow-x-auto border border-white/5 font-mono text-[12px] text-indigo-200" {...props}>
+                              {children}
+                            </code>
+                          );
+                        },
+                        // Handle blockquotes/pre
+                        pre({ children }) {
+                          return <>{children}</>; // code component already handles the styling
+                        }
+                      }}
+                    >
+                      {msg.content}
+                    </ReactMarkdown>
                   </div>
                 </div>
               ))}
@@ -89,7 +118,7 @@ export default function SreAssistant() {
                 placeholder="Query system status..."
                 className="flex-1 bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-indigo-500/50 transition-colors"
               />
-              <button onClick={handleSend} className={`p-2 ${PRIMARY_BTN}`} aria-label="Send Query">
+              <button onClick={handleSend} className={`p-2 ${PRIMARY_BTN}`}>
                 <Send size={16} />
               </button>
             </div>
@@ -103,7 +132,6 @@ export default function SreAssistant() {
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
         className={`w-14 h-14 flex items-center justify-center shadow-2xl ${PRIMARY_BTN}`}
-        aria-label="Toggle SRE Assistant"
       >
         {isOpen ? <Terminal size={24} /> : <Bot size={24} />}
       </m.button>
