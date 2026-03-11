@@ -16,6 +16,7 @@ import {
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import CalendlyModal from "../components/CalendlyModal";
+import SreAssistant from "../components/SreAssistant";
 
 /* ---------------------------------------------
    MOTION SYSTEM (lean)
@@ -1170,6 +1171,7 @@ export default function Home() {
             </div>
           </div>
         </footer>
+        <SreAssistant />
       </div>
     </LazyMotion>
   );
